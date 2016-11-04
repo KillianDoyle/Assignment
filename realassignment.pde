@@ -17,6 +17,12 @@ int diam = 120;
 //font
 PFont Digi_tech;
 
+//levels
+float oxyLevel= 18.0000;          //initial value for oxygen percentage
+int mslQty= 10;                  //initial value for missiles
+int gunsAmmo = 60;              //initial value for ammuniton
+float damage= random(90, 100);  //random variable for damage
+
 void setup()
 {
   size(800, 400);
@@ -34,10 +40,11 @@ void draw()
   //if DOWN key is pushed the scanner function is called
   if (keyCode == DOWN)
   {
-    scanner();
-  }
+    scanner();    //a "scanner" that pans the screen
+  }//end if
   time(15, 390);  //digital clock
   radar(width*0.125, height*0.75);    //radar with position passed
+  data(484, 300);    //data with position passed
 }//end draw()
 
 void move() 
@@ -54,6 +61,20 @@ void scanner()
   stroke(scanner_color);
   line(x, y, x, y+width); 
 }//end scanner
+
+void data(int xpos, int ypos)
+{
+  String oxy = "02: " + oxyLevel;
+  String msl = "MSL: " + mslQty;
+  String guns = "GUN: " + gunsAmmo;
+  String dmg = "DMG: " + damage;
+  
+  fill(255);
+  text(oxy, xpos, ypos);
+  text(msl, xpos, ypos+30);
+  text(guns, xpos, ypos+60);
+  text(dmg, xpos, ypos+90);
+}
 
 void time(int xpos, int ypos)
 {
