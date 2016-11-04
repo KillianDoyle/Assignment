@@ -28,6 +28,8 @@ float oxyLevel= 18.0000;          //initial value for oxygen percentage
 int mslQty= 10;                  //initial value for missiles
 int gunsAmmo = 60;              //initial value for ammuniton
 float damage= random(90, 100);  //random variable for damage
+String mslStatus ="READY";      //set the initial missile weapon status to "READY"
+String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
 
 void setup()
 {
@@ -35,7 +37,6 @@ void setup()
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   textFont(Digi_tech);
   img = loadImage("space.jpg");
-  
 }//end setup()
 
 void draw()
@@ -82,7 +83,26 @@ void data(int xpos, int ypos)
   text(msl, xpos, ypos+30);
   text(guns, xpos, ypos+60);
   text(dmg, xpos, ypos+90);
-}
+  
+  //-------missiles------//
+  fill(255);
+  text(mslStatus, xpos+80, ypos+30);
+  if(mslQty < 5 && mslQty > 0)
+  {
+   mslStatus = "LOW";
+   fill(255, 255, 0);
+   text(mslStatus, xpos+80, ypos+30);
+  }//end if
+  if(mslQty < 1)
+  {
+   mslStatus = "EMPTY";
+   fill(255, 0, 0);
+   if(frameCount % 10 == 0)
+   {
+     text(mslStatus, xpos+80, ypos+30);
+   }//end if
+  }//end if
+}//end data
 
 void time(int xpos, int ypos)
 {
