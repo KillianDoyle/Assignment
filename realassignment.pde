@@ -74,6 +74,22 @@ void scanner()
 
 void data(int xpos, int ypos)
 {
+  if(frameCount % 50 == 0)    //set pace for oxygen level change
+  {
+  oxyLevel = random(18, 21);  //random numbers of realistic normal oxygen levels
+  }//end if
+  if(mousePressed && mouseButton == LEFT)  //if mouse pressed and left click pressed
+  {
+    gunsAmmo-=0.2;    //decriment ammunition
+  }//end if
+  if(keyPressed)    //if key is pressed ONCE
+  {
+     if(keyCode == UP)
+    {
+      mslQty-=0.2;  //decriment missile quantity
+    }//end if
+  }//end if
+  
   //create strings to display data
   String oxy = "02: " + oxyLevel;
   String msl = "MSL: " + mslQty;
