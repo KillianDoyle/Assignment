@@ -20,8 +20,8 @@ PFont Digi_tech;
 //image
 PImage img;
 //image position
-float image1= -100;
-float image2= -100;
+float imageX= -100;
+float imageY= -100;
 
 //levels
 float oxyLevel= 18.0000;          //initial value for oxygen percentage
@@ -30,10 +30,11 @@ int gunsAmmo = 60;              //initial value for ammuniton
 float damage= random(90, 100);  //random variable for damage
 String mslStatus ="READY";      //set the initial missile weapon status to "READY"
 String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
+int fuel = 20;
 
 void setup()
 {
-  size(800, 400);
+  size(800, 600);
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   textFont(Digi_tech);
   img = loadImage("space.jpg");
@@ -42,20 +43,53 @@ void setup()
 void draw()
 {
   background(0); //black background
-  frameRate(12);  // 24 frames per second 
-  image(img, image1, image2);
+  frameRate(12);  
+  //if key is pressed chane imageX to give impression of the ship moving
+  if (keyPressed)
+  {
+    if(keyCode == LEFT)
+    {
+      imageX+=1;    //increment by 1
+    }//end if
+  }//end if
+  if (keyPressed)
+  {
+    if(keyCode == RIGHT)
+    {
+      imageX-=1;    //decrement by 1
+    }//end if
+  }//end if
+  image(img, imageX, imageY);
   grid();        //display a grid 
   move();        //used to control movement of the "scanner"
   //if DOWN key is pushed the scanner function is called
-  if (keyCode == DOWN)
+  if (keyPressed)
   {
-    scanner();    //a "scanner" that pans the screen
-  }//end if
+    if (keyCode == DOWN)
+    {
+      scanner();    //a "scanner" that pans the screen
+    }//end if
+  }
   crosshair();
-  time(15, 390);  //digital clock
-  radar(width*0.125, height*0.75);    //radar with position passed
-  data(484, 300);    //data with position passed
+  fuel();
+  time(width * 0.02, height * 0.98);  //digital clock with position passed
+  radar(width * 0.125, height * 0.83);    //radar with position passed
+  data(width * 0.61, height * 0.83);    //data with position passed
 }//end draw()
+
+void fuel()
+{
+  if(frameCount % 90 == 0)    //set delay for fuel consumption
+  {
+    fuel-=1;
+  }//end if
+  fill(green);
+  noStroke();
+  for (int i=0; i<fuel; i++)
+  {
+    rect((width * 0.49)-i*10, height-25, 5, 8);
+  }//end for
+}//end fuel()
 
 void move() 
 {
@@ -72,7 +106,7 @@ void scanner()
   line(x, y, x, y+width); 
 }//end scanner
 
-void data(int xpos, int ypos)
+void data(float xloc, float yloc)
 {
   if(frameCount % 50 == 0)    //set pace for oxygen level change
   {
@@ -98,19 +132,19 @@ void data(int xpos, int ypos)
   
   //display data
   fill(255);
-  text(oxy, xpos, ypos);
-  text(msl, xpos, ypos+30);
-  text(guns, xpos, ypos+60);
-  text(dmg, xpos, ypos+90);
+  text(oxy, xloc, yloc);
+  text(msl, xloc, yloc+30);
+  text(guns, xloc, yloc+60);
+  text(dmg, xloc, yloc+90);
   
   //-------missiles------//
   fill(255);
-  text(mslStatus, xpos+80, ypos+30);
+  text(mslStatus, xloc+80, yloc+30);
   if(mslQty < 5 && mslQty > 0)
   {
    mslStatus = "LOW";
    fill(255, 255, 0);
-   text(mslStatus, xpos+80, ypos+30);
+   text(mslStatus, xloc+80, yloc+30);
   }//end if
   
   if(mslQty < 1)
@@ -119,18 +153,18 @@ void data(int xpos, int ypos)
    fill(red);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
-     text(mslStatus, xpos+80, ypos+30);
+     text(mslStatus, xloc+80, yloc+30);
    }//end if
   }//end if
   
   //-------guns-------//
   fill(255);
-  text(gunsStatus, xpos+80, ypos+60);
+  text(gunsStatus, xloc+80, yloc+60);
   if(gunsAmmo < 50 && gunsAmmo>0)
   {
    gunsStatus = "LOW";
    fill(255, 255, 0);
-   text(gunsStatus, xpos+80, ypos+60);
+   text(gunsStatus, xloc+80, yloc+60);
   }//end if
   if(gunsAmmo ==0)
   {
@@ -138,7 +172,7 @@ void data(int xpos, int ypos)
    fill(red);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
-   text(gunsStatus, xpos+80, ypos+60);
+   text(gunsStatus, xloc+80, yloc+60);
    }//end if
   }//end if
 }//end data
@@ -170,13 +204,13 @@ void crosshair()
   */
 }//end crosshair()
 
-void time(int xpos, int ypos)
+void time(float xloc, float yloc)
 {
   fill(255);
   int s = second(); 
   int m = minute(); 
   int h = hour(); 
-  text(h + ":" + nf(m, 2) + ":" + nf(s, 2), xpos, ypos);
+  text(h + ":" + nf(m, 2) + ":" + nf(s, 2), xloc, yloc);
 }//end time()
 
 void radar(float xloc, float yloc)
