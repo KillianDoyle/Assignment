@@ -102,6 +102,25 @@ void data(int xpos, int ypos)
      text(mslStatus, xpos+80, ypos+30);
    }//end if
   }//end if
+  
+  //-------guns-------//
+  fill(255);
+  text(gunsStatus, xpos+80, ypos+60);
+  if(gunsAmmo < 50 && gunsAmmo>0)
+  {
+   gunsStatus = "LOW";
+   fill(255, 255, 0);
+   text(gunsStatus, xpos+80, ypos+60);
+  }//end if
+  if(gunsAmmo ==0)
+  {
+   gunsStatus = "EMPTY";
+   fill(255, 0, 0);
+   if(frameCount % 10 == 0)
+   {
+   text(gunsStatus, xpos+80, ypos+60);
+   }//end if
+  }//end if
 }//end data
 
 void time(int xpos, int ypos)
