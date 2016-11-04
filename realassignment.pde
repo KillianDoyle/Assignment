@@ -15,6 +15,16 @@ void draw()
 {
   background(0); //black background
   grid();
+  time(15, 390);
+}
+
+void time(int xpos, int ypos)
+{
+  fill(255);
+  int s = second(); 
+  int m = minute(); 
+  int h = hour(); 
+  text(h + ":" + nf(m, 2) + ":" + nf(s, 2), xpos, ypos);
 }
 
 void grid()
