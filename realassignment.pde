@@ -14,9 +14,15 @@ float y = 0;
 //radar diameter
 int diam = 120;
 
+//font
+PFont Digi_tech;
+
 void setup()
 {
   size(800, 400);
+  Digi_tech = loadFont("Digitaltech-10.vlw"); 
+  textFont(Digi_tech);
+  
 }//end setup()
 
 void draw()
@@ -24,7 +30,8 @@ void draw()
   background(0); //black background
   frameRate(12);  // 24 frames per second 
   grid();        //display a grid 
-  move();
+  move();        //used to control movement of the "scanner"
+  //if DOWN key is pushed the scanner function is called
   if (keyCode == DOWN)
   {
     scanner();
@@ -39,14 +46,14 @@ void move()
   if (x > width)
   {
     x = 0;
-  }
-}
+  }//end if
+}//end scan
 
 void scanner()
 {
   stroke(scanner_color);
   line(x, y, x, y+width); 
-}
+}//end scanner
 
 void time(int xpos, int ypos)
 {
