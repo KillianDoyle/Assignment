@@ -2,6 +2,7 @@
 int green = color(131, 255, 145);  
 int red = color(255, 82, 82);
 int blue = color(82, 167, 255);
+int white = color(255); 
 
 //scanner
 color scanner_color = red; // red
@@ -60,8 +61,8 @@ void draw()
     }//end if
   }//end if
   image(img, imageX, imageY);
-  grid();        //display a grid 
-  move();        //used to control movement of the "scanner"
+  grid();    //display a grid 
+  move();    //used to control movement of the "scanner"
   //if DOWN key is pushed the scanner function is called
   if (keyPressed)
   {
@@ -71,13 +72,13 @@ void draw()
     }//end if
   }
   crosshair();
-  fuel();
+  fuel(width * 0.494, height-25);
   time(width * 0.02, height * 0.98);  //digital clock with position passed
   radar(width * 0.125, height * 0.83);    //radar with position passed
-  data(width * 0.61, height * 0.83);    //data with position passed
+  data(width * 0.81, height * 0.83);    //data with position passed
 }//end draw()
 
-void fuel()
+void fuel(float xloc, float yloc)
 {
   if(frameCount % 90 == 0)    //set delay for fuel consumption
   {
@@ -87,8 +88,27 @@ void fuel()
   noStroke();
   for (int i=0; i<fuel; i++)
   {
-    rect((width * 0.49)-i*10, height-25, 5, 8);
+    rect((xloc)-i*10, yloc, 6, 8);    //draws blocks to reprisent fuel amount
   }//end for
+  fill(white);
+  text("FUEL", 280, 558);    //print "FUEL" above fuel gauge
+  stroke(white);
+  line(xloc+8, yloc+10, 203, yloc+10);    //draw horizontal line for fuel gauge
+  for(int a=0; a<21; a++)
+  {
+    line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for fuel gauge
+    xloc-=10;    //decrement x location by 10
+  }//end for
+  stroke(red);    //change color to red for "low" part of guel gauge
+  line(362, 585, 403, 585);    //draw line for "low" part of fuel gauge
+  xloc = width * 0.494;      //reset xloc to start of gauge
+  for(int a=0; a<4; a++)
+  {
+    line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for "low" part of fuel gauge
+    xloc-=10;    //decrement x location by 10
+  }//end for
+  println(mouseX);
+  println(mouseY);
 }//end fuel()
 
 void move() 
@@ -248,7 +268,7 @@ void grid()
      line(i, 0, i, height);
   }//end for loop
 
-  for(int w= 0; w < height; w += heightSpace)
+  for(int w=0; w<height; w+=heightSpace)
    {
      line(0, w, width, w);
    }//end for loop
