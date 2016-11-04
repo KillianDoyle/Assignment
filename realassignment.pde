@@ -17,6 +17,12 @@ int diam = 120;
 //font
 PFont Digi_tech;
 
+//image
+PImage img;
+//image position
+float image1= -100;
+float image2= -100;
+
 //levels
 float oxyLevel= 18.0000;          //initial value for oxygen percentage
 int mslQty= 10;                  //initial value for missiles
@@ -28,6 +34,7 @@ void setup()
   size(800, 400);
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   textFont(Digi_tech);
+  img = loadImage("space.jpg");
   
 }//end setup()
 
@@ -35,6 +42,7 @@ void draw()
 {
   background(0); //black background
   frameRate(12);  // 24 frames per second 
+  image(img, image1, image2);
   grid();        //display a grid 
   move();        //used to control movement of the "scanner"
   //if DOWN key is pushed the scanner function is called
