@@ -51,6 +51,7 @@ void draw()
   {
     scanner();    //a "scanner" that pans the screen
   }//end if
+  crosshair();
   time(15, 390);  //digital clock
   radar(width*0.125, height*0.75);    //radar with position passed
   data(484, 300);    //data with position passed
@@ -73,11 +74,13 @@ void scanner()
 
 void data(int xpos, int ypos)
 {
+  //create strings to display data
   String oxy = "02: " + oxyLevel;
   String msl = "MSL: " + mslQty;
   String guns = "GUN: " + gunsAmmo;
   String dmg = "DMG: " + damage;
   
+  //display data
   fill(255);
   text(oxy, xpos, ypos);
   text(msl, xpos, ypos+30);
@@ -93,11 +96,12 @@ void data(int xpos, int ypos)
    fill(255, 255, 0);
    text(mslStatus, xpos+80, ypos+30);
   }//end if
+  
   if(mslQty < 1)
   {
    mslStatus = "EMPTY";
-   fill(255, 0, 0);
-   if(frameCount % 10 == 0)
+   fill(red);
+   if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
      text(mslStatus, xpos+80, ypos+30);
    }//end if
@@ -115,13 +119,40 @@ void data(int xpos, int ypos)
   if(gunsAmmo ==0)
   {
    gunsStatus = "EMPTY";
-   fill(255, 0, 0);
-   if(frameCount % 10 == 0)
+   fill(red);
+   if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
    text(gunsStatus, xpos+80, ypos+60);
    }//end if
   }//end if
 }//end data
+
+void crosshair()
+{
+  noFill();
+  stroke(red);
+  //move crosshair by mouse
+  ellipse(mouseX, mouseY, 30, 30);
+  ellipse(mouseX, mouseY, 50, 50);
+  line(mouseX-30, mouseY-30, mouseX+30, mouseY+30);
+  line(mouseX+30, mouseY-30, mouseX-30, mouseY+30);
+  
+  if(mousePressed && gunsAmmo > 0)    //if mouse pressed and there is ammo left
+  {
+    noFill();
+    stroke(255);
+    //white crosshair within main one when mouse clicked
+    ellipse(mouseX, mouseY, 20, 20);
+    line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
+    line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
+  }//end if
+  
+  /*----stationary central crosshair----
+  ellipse(width/2, height/2, 30, 30);
+  line(width/2-30, height/2-30, width/2+30, height/2+30);
+  line(width/2+30, height/2-30, width/2-30, height/2+30);
+  */
+}//end crosshair()
 
 void time(int xpos, int ypos)
 {
