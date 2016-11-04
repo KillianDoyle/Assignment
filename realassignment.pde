@@ -3,6 +3,14 @@ int green = color(131, 255, 145);
 int red = color(255, 82, 82);
 int blue = color(82, 167, 255);
 
+//scanner
+color scanner_color = red; // red
+float speed = 20; //scanner speed
+
+//move
+float x = 0;
+float y = 0;
+
 //radar diameter
 int diam = 120;
 
@@ -16,9 +24,29 @@ void draw()
   background(0); //black background
   frameRate(12);  // 24 frames per second 
   grid();        //display a grid 
+  move();
+  if (keyCode == DOWN)
+  {
+    scanner();
+  }
   time(15, 390);  //digital clock
   radar(width*0.125, height*0.75);    //radar with position passed
 }//end draw()
+
+void move() 
+{
+  x = x + speed;
+  if (x > width)
+  {
+    x = 0;
+  }
+}
+
+void scanner()
+{
+  stroke(scanner_color);
+  line(x, y, x, y+width); 
+}
 
 void time(int xpos, int ypos)
 {
