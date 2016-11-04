@@ -22,7 +22,7 @@ PFont Digi_tech2;
 //image
 PImage img;
 //image position
-float imageX= -100;
+float imageX= -300;
 float imageY= -100;
 
 //levels
@@ -32,7 +32,7 @@ int gunsAmmo = 60;              //initial value for ammuniton
 float damage= random(90, 100);  //random variable for damage
 String mslStatus ="READY";      //set the initial missile weapon status to "READY"
 String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
-int fuel = 4;
+int fuel = 20;
 
 void setup()
 {
@@ -53,18 +53,19 @@ void draw()
   {
     if(keyCode == LEFT)
     {
-      imageX+=1;    //increment by 1
+      imageX+=2;    //increment by 1
     }//end if
   }//end if
   if (keyPressed)
   {
     if(keyCode == RIGHT)
     {
-      imageX-=1;    //decrement by 1
+      imageX-=2;    //decrement by 1
     }//end if
   }//end if
   image(img, imageX, imageY);
   grid();    //display a grid 
+  frame();
   move();    //used to control movement of the "scanner"
   //if DOWN key is pushed the scanner function is called
   if (keyPressed)
@@ -75,14 +76,17 @@ void draw()
     }//end if
   }
   crosshair();
-  fuel(width * 0.494, height-25);
-  time(width * 0.02, height * 0.98);  //digital clock with position passed
+  fuel(width * 0.62, height-25);
+  time(width * 0.46, height * 0.04);  //digital clock with position passed
   radar(width * 0.125, height * 0.83);    //radar with position passed
   data(width * 0.81, height * 0.83);    //data with position passed
+  println(mouseX);
+  println(mouseY);
 }//end draw()
 
 void fuel(float xloc, float yloc)
 {
+  strokeWeight(1);
   if(frameCount % 90 == 0)    //set delay for fuel consumption
   {
     fuel-=1;
@@ -94,24 +98,24 @@ void fuel(float xloc, float yloc)
     rect((xloc)-i*10, yloc, 6, 8);    //draws blocks to reprisent fuel amount
   }//end for
   fill(white);
-  text("FUEL", 280, 558);    //print "FUEL" above fuel gauge
+  text("FUEL", width/2-19, 558);    //print "FUEL" above fuel gauge
   stroke(white);
-  line(xloc+8, yloc+10, 203, yloc+10);    //draw horizontal line for fuel gauge
+  line(xloc+8, yloc+10, 305, yloc+10);    //draw horizontal line for fuel gauge
   for(int a=0; a<21; a++)
   {
     line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for fuel gauge
     xloc-=10;    //decrement x location by 10
   }//end for
   stroke(red);    //change color to red for "low" part of guel gauge
-  line(362, 585, 403, 585);    //draw line for "low" part of fuel gauge
-  xloc = width * 0.494;      //reset xloc to start of gauge
-  for(int a=0; a<5; a++)
+  line(453, 585, 505, 585);    //draw line for "low" part of fuel gauge
+  xloc = 496;      //reset xloc to start of gauge
+  for(int a=0; a<6; a++)
   {
     line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for "low" part of fuel gauge
     xloc-=10;    //decrement x location by 10
   }//end for
   
-  if(fuel<5)
+  if(fuel<6)
   {
     if (frameCount % 2 == 0)
     {
@@ -212,6 +216,7 @@ void data(float xloc, float yloc)
 void crosshair()
 {
   noFill();
+  strokeWeight(2);
   stroke(red);
   //move crosshair by mouse
   ellipse(mouseX, mouseY, 30, 30);
@@ -248,7 +253,7 @@ void time(float xloc, float yloc)
 
 void radar(float xloc, float yloc)
 { 
-  
+  strokeWeight(2);
   stroke(255); 
   noFill();
   if (diam <= 120)
@@ -268,12 +273,24 @@ void radar(float xloc, float yloc)
   ellipse(xloc, yloc, 10, 10);
 }//end radar()
 
+void frame()
+{
+  stroke(white);
+  strokeWeight(5);
+  line(0, 320, 120, 400);
+  line(120, 400, 680, 400);
+  line(680, 400, 800, 320);
+  line(0, 80, 80, 0);
+  line(720, 0, 800, 80);
+}
+
 void grid()
 {
   //grid calculations
   int widthSpace = 40;     
   int heightSpace = 40; 
   
+  strokeWeight(2);
   stroke(blue);    //set line color
   
   for(int i = 0; i < width; i += widthSpace)
