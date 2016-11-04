@@ -17,6 +17,7 @@ int diam = 120;
 
 //font
 PFont Digi_tech;
+PFont Digi_tech2;
 
 //image
 PImage img;
@@ -31,13 +32,15 @@ int gunsAmmo = 60;              //initial value for ammuniton
 float damage= random(90, 100);  //random variable for damage
 String mslStatus ="READY";      //set the initial missile weapon status to "READY"
 String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
-int fuel = 20;
+int fuel = 4;
 
 void setup()
 {
   size(800, 600);
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
+  Digi_tech2 = loadFont("Digitaltech-20.vlw");
   textFont(Digi_tech);
+  textFont(Digi_tech2);
   img = loadImage("space.jpg");
 }//end setup()
 
@@ -102,13 +105,21 @@ void fuel(float xloc, float yloc)
   stroke(red);    //change color to red for "low" part of guel gauge
   line(362, 585, 403, 585);    //draw line for "low" part of fuel gauge
   xloc = width * 0.494;      //reset xloc to start of gauge
-  for(int a=0; a<4; a++)
+  for(int a=0; a<5; a++)
   {
     line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for "low" part of fuel gauge
     xloc-=10;    //decrement x location by 10
   }//end for
-  println(mouseX);
-  println(mouseY);
+  
+  if(fuel<5)
+  {
+    if (frameCount % 2 == 0)
+    {
+    textFont(Digi_tech2);    //larger font
+    fill(red);
+    text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print emergency message
+    }
+  }
 }//end fuel()
 
 void move() 
@@ -128,6 +139,7 @@ void scanner()
 
 void data(float xloc, float yloc)
 {
+  textFont(Digi_tech);
   if(frameCount % 50 == 0)    //set pace for oxygen level change
   {
   oxyLevel = random(18, 21);  //random numbers of realistic normal oxygen levels
@@ -226,6 +238,7 @@ void crosshair()
 
 void time(float xloc, float yloc)
 {
+  textFont(Digi_tech);
   fill(255);
   int s = second(); 
   int m = minute(); 
