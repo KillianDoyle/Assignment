@@ -1,3 +1,5 @@
+//----variables----
+
 // grid colors
 int green = color(131, 255, 145);  
 int red = color(255, 82, 82);
@@ -34,6 +36,12 @@ String mslStatus ="READY";      //set the initial missile weapon status to "READ
 String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
 int fuel = 20;
 
+//delay for flashing message
+int delay = 1000;// ONE SEC
+int now; 
+//a flag
+boolean flash = false;
+
 void setup()
 {
   size(800, 600);
@@ -42,6 +50,7 @@ void setup()
   textFont(Digi_tech);
   textFont(Digi_tech2);
   img = loadImage("space.jpg");
+  now = millis();    //used for delay in flashing message
 }//end setup()
 
 void draw()
@@ -115,9 +124,18 @@ void fuel(float xloc, float yloc)
     xloc-=10;    //decrement x location by 10
   }//end for
   
+  if (millis() - now > delay)    //flashing warning message
+  { 
+    //change flag
+    flash = !flash;
+    //reset counter
+    now = millis();
+  }
+  
+  
   if(fuel<6)
   {
-    if (frameCount % 2 == 0)
+    if (flash)
     {
     textFont(Digi_tech2);    //larger font
     fill(red);
@@ -275,6 +293,9 @@ void radar(float xloc, float yloc)
 
 void frame()
 {
+  strokeCap(SQUARE);
+  
+  //White frame
   stroke(white);
   strokeWeight(5);
   line(0, 320, 120, 400);
@@ -282,6 +303,17 @@ void frame()
   line(680, 400, 800, 320);
   line(0, 80, 80, 0);
   line(720, 0, 800, 80);
+  
+  //blue center
+  //stroke(blue);
+  strokeWeight(4);
+  line(320, 120, 320, 280);
+  line(320, 120, 360, 120);
+  line(320, 280, 360, 280);
+  line(480, 120, 480, 280);
+  line(480, 120, 440, 120);
+  line(440, 280, 480, 280);
+  
 }
 
 void grid()
