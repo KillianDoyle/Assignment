@@ -1,15 +1,18 @@
 //----variables----//
 
 // grid colors
-int green = color(131, 255, 145);  
+int green = color(131, 255, 145); 
+int green2 = color(0, 255, 0);
 int red = color(255, 82, 82);
+int red2 = color(255, 0 ,0);
 int blue = color(82, 167, 255);
+int blue2 = color (0, 0, 255);
 int white = color(255); 
-int gridStroke=  blue;
+int gridStroke = blue;    //set default grid to blue
 
 //scanner
 color scanner_color = color(255, 0, 0); // red
-float speed = 20; //scanner speed
+float speed = 10; //scanner speed
 
 //move
 float x = 0;
@@ -35,13 +38,17 @@ int gunsAmmo = 60;              //initial value for ammuniton
 float damage= random(90, 100);  //random variable for damage
 String mslStatus ="READY";      //set the initial missile weapon status to "READY"
 String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
-int fuel = 20;
+int fuel = 20;                  //default fuel level
 
 //delay for flashing message
 int delay = 1000;// ONE SEC
 int now; 
 //a flag
 boolean flash = false;
+
+Button button1;
+Button button2;
+Button button3;
 
 void setup()
 {
@@ -52,6 +59,10 @@ void setup()
   textFont(Digi_tech2);
   img = loadImage("space.jpg");
   now = millis();    //used for delay in flashing message
+  button1 = new Button(360, 420, 30, 30, blue, blue2);
+  button2 = new Button(400, 420, 30, 30, red, red2);
+  button3 = new Button(440, 420, 30, 30, green, green2);
+
 }//end setup()
 
 void draw()
@@ -102,7 +113,7 @@ void fuel(float xloc, float yloc)
   {
     fuel-=1;
   }//end if
-  fill(green);
+  fill(green2);
   noStroke();
   for (int i=0; i<fuel; i++)
   {
@@ -339,20 +350,11 @@ void grid()
    }//end for loop
 }//end grid()
 
+
+
 void controls()
 {
-  float x = 380;
-  float y = 420;
-  float r1 = 30;
-  float r2 = 30;
-  fill(255, 0, 0);
-  stroke(white);
-  ellipse(x, y, r1, r2);
-  if(mousePressed)
-  {
-    if(mouseX >=x && mouseX <=x +r1 && mouseY >= y && mouseY <= y+r2)
-    {
-      gridStroke = red;
-    }
-  }
-}
+  button1.run();
+  button2.run();
+  button3.run();
+}//end controls
