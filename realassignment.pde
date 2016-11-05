@@ -1,4 +1,4 @@
-//----variables----
+//----variables----//
 
 // grid colors
 int green = color(131, 255, 145);  
@@ -7,7 +7,7 @@ int blue = color(82, 167, 255);
 int white = color(255); 
 
 //scanner
-color scanner_color = red; // red
+color scanner_color = color(255, 0, 0); // red
 float speed = 20; //scanner speed
 
 //move
@@ -89,6 +89,7 @@ void draw()
   time(width * 0.46, height * 0.04);  //digital clock with position passed
   radar(width * 0.125, height * 0.83);    //radar with position passed
   data(width * 0.81, height * 0.83);    //data with position passed
+  controls();
   println(mouseX);
   println(mouseY);
 }//end draw()
@@ -115,7 +116,7 @@ void fuel(float xloc, float yloc)
     line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for fuel gauge
     xloc-=10;    //decrement x location by 10
   }//end for
-  stroke(red);    //change color to red for "low" part of guel gauge
+  stroke(255, 0, 0);    //change color to red for "low" part of guel gauge
   line(453, 585, 505, 585);    //draw line for "low" part of fuel gauge
   xloc = 496;      //reset xloc to start of gauge
   for(int a=0; a<6; a++)
@@ -130,8 +131,7 @@ void fuel(float xloc, float yloc)
     flash = !flash;
     //reset counter
     now = millis();
-  }
-  
+  }//end if
   
   if(fuel<6)
   {
@@ -140,8 +140,8 @@ void fuel(float xloc, float yloc)
     textFont(Digi_tech2);    //larger font
     fill(red);
     text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print emergency message
-    }
-  }
+    }//end if
+  }//end if
 }//end fuel()
 
 void move() 
@@ -155,8 +155,8 @@ void move()
 
 void scanner()
 {
-  stroke(scanner_color);
-  line(x, y, x, y+width); 
+ stroke(scanner_color);
+ line(x, y, x, height);
 }//end scanner
 
 void data(float xloc, float yloc)
@@ -166,7 +166,7 @@ void data(float xloc, float yloc)
   {
   oxyLevel = random(18, 21);  //random numbers of realistic normal oxygen levels
   }//end if
-  if(mousePressed && mouseButton == LEFT)  //if mouse pressed and left click pressed
+  if(mousePressed && mouseButton == LEFT && mouseY< 399)  //if mouse pressed and left click pressed and mouseY is less than 399
   {
     gunsAmmo-=0.2;    //decriment ammunition
   }//end if
@@ -235,14 +235,14 @@ void crosshair()
 {
   noFill();
   strokeWeight(2);
-  stroke(red);
+  stroke(255, 0, 0);    //red
   //move crosshair by mouse
   ellipse(mouseX, mouseY, 30, 30);
   ellipse(mouseX, mouseY, 50, 50);
   line(mouseX-30, mouseY-30, mouseX+30, mouseY+30);
   line(mouseX+30, mouseY-30, mouseX-30, mouseY+30);
   
-  if(mousePressed && gunsAmmo > 0)    //if mouse pressed and there is ammo left
+  if(mousePressed && gunsAmmo > 0 && mouseY < 399)    //if mouse pressed and there is ammo left and mouseY is less than 399
   {
     noFill();
     stroke(255);
@@ -307,14 +307,17 @@ void frame()
   //blue center
   //stroke(blue);
   strokeWeight(4);
-  line(320, 120, 320, 280);
-  line(320, 120, 360, 120);
-  line(320, 280, 360, 280);
-  line(480, 120, 480, 280);
-  line(480, 120, 440, 120);
-  line(440, 280, 480, 280);
-  
-}
+  //outer center piece
+  line(320, 120, 320, 280);  //left vertical
+  line(320, 120, 360, 120);  //top left horizontal
+  line(320, 280, 360, 280);  //nottom right horizontal
+  line(480, 120, 480, 280);  //right vertical
+  line(480, 120, 440, 120);  //top right vertical
+  line(440, 280, 480, 280);  //bottom right vertical
+  //inner center piece
+  line(360, 160, 360, 240);  //left verical
+  line(440, 160, 440, 240);  //right vertival
+}//end frame()
 
 void grid()
 {
@@ -335,3 +338,20 @@ void grid()
      line(0, w, width, w);
    }//end for loop
 }//end grid()
+
+void controls()
+{
+  float x = 380;
+  float y = 425;
+  float w = 30;
+  float h = 30;
+  ellipse(x,y,w,h);
+  fill(255);
+  if(mousePressed)
+  {
+    if(mouseX>x && mouseX <x+w && mouseY>y && mouseY <y+h)
+    {
+    
+    }
+  }
+}
