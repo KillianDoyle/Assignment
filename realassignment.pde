@@ -5,6 +5,7 @@ int green = color(131, 255, 145);
 int red = color(255, 82, 82);
 int blue = color(82, 167, 255);
 int white = color(255); 
+int gridStroke=  blue;
 
 //scanner
 color scanner_color = color(255, 0, 0); // red
@@ -324,9 +325,8 @@ void grid()
   //grid calculations
   int widthSpace = 40;     
   int heightSpace = 40; 
-  
   strokeWeight(2);
-  stroke(blue);    //set line color
+  stroke(gridStroke);    //set line color
   
   for(int i = 0; i < width; i += widthSpace)
   { 
@@ -342,16 +342,17 @@ void grid()
 void controls()
 {
   float x = 380;
-  float y = 425;
-  float w = 30;
-  float h = 30;
-  ellipse(x,y,w,h);
-  fill(255);
+  float y = 420;
+  float r1 = 30;
+  float r2 = 30;
+  fill(255, 0, 0);
+  stroke(white);
+  ellipse(x, y, r1, r2);
   if(mousePressed)
   {
-    if(mouseX>x && mouseX <x+w && mouseY>y && mouseY <y+h)
+    if(mouseX >=x && mouseX <=x +r1 && mouseY >= y && mouseY <= y+r2)
     {
-    
+      gridStroke = red;
     }
   }
 }
