@@ -150,7 +150,7 @@ void fuel(float xloc, float yloc)
     if (flash)
     {
     textFont(Digi_tech2);    //larger font
-    fill(red);
+    fill(red2);
     text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print emergency message
     }//end if
   }//end if
@@ -169,6 +169,8 @@ void scanner()
 {
  stroke(scanner_color);
  line(x, y, x, height);
+ fill(red2);
+ text("SCANNING...", 362, 500);
 }//end scanner
 
 void data(float xloc, float yloc)
