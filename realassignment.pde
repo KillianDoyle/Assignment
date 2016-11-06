@@ -27,6 +27,8 @@ PFont Digi_tech2;
 
 //image
 PImage img;
+PImage img2;
+PImage img3;
 //image position
 float imageX= -300;
 float imageY= -100;
@@ -46,6 +48,7 @@ int now;
 //a flag
 boolean flash = false;
 
+//class Button, used in controls()
 Button button1;
 Button button2;
 Button button3;
@@ -58,10 +61,13 @@ void setup()
   textFont(Digi_tech);
   textFont(Digi_tech2);
   img = loadImage("space.jpg");
+  img2 = loadImage("space2.jpg");
+  img3 = loadImage("space3.jpg");
   now = millis();    //used for delay in flashing message
-  button1 = new Button(360, 420, 30, 30, blue, blue2);
-  button2 = new Button(400, 420, 30, 30, red, red2);
-  button3 = new Button(440, 420, 30, 30, green, green2);
+  //buttons that feature in controls()
+  button1 = new Button(360, 420, blue, blue2);
+  button2 = new Button(400, 420, red, red2);
+  button3 = new Button(440, 420, green, green2);
 
 }//end setup()
 
@@ -84,7 +90,7 @@ void draw()
       imageX-=2;    //decrement by 1
     }//end if
   }//end if
-  image(img, imageX, imageY);
+  image(img2, imageX, imageY);
   grid();    //display a grid 
   frame();
   move();    //used to control movement of the "scanner"

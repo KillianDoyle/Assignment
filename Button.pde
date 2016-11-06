@@ -6,18 +6,16 @@ class Button
  //variables
  float xloc;
  float yloc;
- float r1; 
- float r2;
  int fillC;
  int fillS;
+ int r1 = 20;
+ int r2 = 20;
  
  //the co-ordinates and the two different colors of the buttons are passed.
- Button(float x, float y, float r_1, float r_2, int Cfill, int Sfill )
+ Button(float x, float y, int Cfill, int Sfill )
  {
    xloc = x;
    yloc =y;
-   r1 = r_1;
-   r2 = r_2;
    fillC = Cfill;
    fillS = Sfill;
  }
@@ -35,7 +33,7 @@ class Button
     //the following code dictates what color the grid changes depending on what button is pressed
     if(mousePressed)
     {
-      if(mouseX >=xloc && mouseX <=xloc+r1 && mouseY >= yloc && mouseY <= yloc+r2)
+      if(mouseX >=xloc-r1 && mouseX <=xloc+r1 && mouseY >= yloc-r2 && mouseY <= yloc+r2)
       {
         if(fillC==red)
         {
