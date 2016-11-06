@@ -1,5 +1,5 @@
-/*A class used to create the buttons that control the grid colour. 
-This class features in the control funtion.*/
+/* A class used to create the buttons that control the grid colour. 
+This class features in the control funtion*/
 
 class Button 
 {

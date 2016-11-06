@@ -24,6 +24,7 @@ int diam = 120;
 //font
 PFont Digi_tech;
 PFont Digi_tech2;
+PFont Space_tech;
 
 //image
 PImage img;
@@ -45,7 +46,7 @@ int fuel = 20;                  //default fuel level
 //delay for flashing message
 int delay = 1000;// ONE SEC
 int now; 
-//a flag
+//flag
 boolean flash = false;
 
 //class Button, used in controls()
@@ -58,8 +59,10 @@ void setup()
   size(800, 600);
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   Digi_tech2 = loadFont("Digitaltech-20.vlw");
+  Space_tech = loadFont("Spac3tech-20.vlw");
   textFont(Digi_tech);
   textFont(Digi_tech2);
+  textFont(Space_tech);
   img = loadImage("space.jpg");
   img2 = loadImage("space2.jpg");
   img3 = loadImage("space3.jpg");
@@ -108,6 +111,7 @@ void draw()
   radar(width * 0.125, height * 0.83);    //radar with position passed
   data(width * 0.81, height * 0.83);    //data with position passed
   controls();
+  logo();
   println(mouseX);
   println(mouseY);
 }//end draw()
@@ -151,13 +155,22 @@ void fuel(float xloc, float yloc)
     now = millis();
   }//end if
   
-  if(fuel<6)
+  if(fuel<6 && fuel>0)
   {
     if (flash)
     {
     textFont(Digi_tech2);    //larger font
     fill(red2);
-    text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print emergency message
+    text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print low fuel message
+    }//end if
+  }//end if
+  if(fuel<=0)
+  {
+    if (flash)
+    {
+    textFont(Digi_tech2);    //larger font
+    fill(red2);
+    text("FUEL EMPTY", width/2-100, height/2+20);    //print empty message
     }//end if
   }//end if
 }//end fuel()
@@ -336,7 +349,11 @@ void frame()
   line(440, 280, 480, 280);  //bottom right vertical
   //inner center piece
   line(360, 160, 360, 240);  //left verical
-  line(440, 160, 440, 240);  //right vertival
+  line(360, 160, 380, 160);  //top left horizontal
+  line(360, 240, 380, 240);  //bottom left horizontal
+  line(440, 160, 440, 240);  //right verical
+  line(440, 160, 420, 160);  //top right horizontal
+  line(440, 240, 420, 240);  //bottom right horizontal
 }//end frame()
 
 void grid()
@@ -358,11 +375,16 @@ void grid()
    }//end for loop
 }//end grid()
 
-
-
 void controls()
 {
   button1.run();
   button2.run();
   button3.run();
 }//end controls
+
+void logo()
+{
+  fill(255);
+  textFont(Space_tech);
+  text("deltacorp", 10, height-10);
+}
