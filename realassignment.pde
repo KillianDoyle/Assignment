@@ -1,6 +1,6 @@
 //----variables----//
 
-// grid colors
+//colors
 int green = color(131, 255, 145); 
 int green2 = color(0, 255, 0);
 int red = color(255, 82, 82);
@@ -8,11 +8,11 @@ int red2 = color(255, 0 ,0);
 int blue = color(82, 167, 255);
 int blue2 = color (0, 0, 255);
 int white = color(255); 
+int yellow = color(250, 255, 0);
 int gridStroke = blue;    //set default grid to blue
 
 //scanner
-color scanner_color = color(255, 0, 0); // red
-float speed = 10; //scanner speed
+float speed = 10; 
 
 //move
 float x = 0;
@@ -130,6 +130,7 @@ void fuel(float xloc, float yloc)
     rect((xloc)-i*10, yloc, 6, 8);    //draws blocks to reprisent fuel amount
   }//end for
   fill(white);
+  textFont(Digi_tech);
   text("FUEL", width/2-19, 558);    //print "FUEL" above fuel gauge
   stroke(white);
   line(xloc+8, yloc+10, 305, yloc+10);    //draw horizontal line for fuel gauge
@@ -178,15 +179,15 @@ void fuel(float xloc, float yloc)
 void move() 
 {
   x = x + speed;
-  if (x > width)
+  if (x > width)    //if x is bigger than the HUD
   {
-    x = 0;
+    x = 0;   //x is reset to 0 to start again
   }//end if
 }//end scan
 
 void scanner()
 {
- stroke(scanner_color);
+ stroke(red2);
  line(x, y, x, height);
  fill(red2);
  text("SCANNING...", 362, 500);
@@ -201,13 +202,13 @@ void data(float xloc, float yloc)
   }//end if
   if(mousePressed && mouseButton == LEFT && mouseY< 399)  //if mouse pressed and left click pressed and mouseY is less than 399
   {
-    gunsAmmo-=0.2;    //decriment ammunition
+    gunsAmmo-=0.1;    //decriment ammunition
   }//end if
   if(keyPressed)    //if key is pressed ONCE
   {
      if(keyCode == UP)
     {
-      mslQty-=0.2;  //decriment missile quantity
+      mslQty-=0.1;  //decriment missile quantity
     }//end if
   }//end if
   
@@ -237,7 +238,7 @@ void data(float xloc, float yloc)
   if(mslQty < 1)
   {
    mslStatus = "EMPTY";
-   fill(red);
+   fill(red2);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
      text(mslStatus, xloc+80, yloc+30);
@@ -256,7 +257,7 @@ void data(float xloc, float yloc)
   if(gunsAmmo ==0)
   {
    gunsStatus = "EMPTY";
-   fill(red);
+   fill(red2);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
    text(gunsStatus, xloc+80, yloc+60);
@@ -278,7 +279,7 @@ void crosshair()
   if(mousePressed && gunsAmmo > 0 && mouseY < 399)    //if mouse pressed and there is ammo left and mouseY is less than 399
   {
     noFill();
-    stroke(255);
+    stroke(yellow);
     //white crosshair within main one when mouse clicked
     ellipse(mouseX, mouseY, 20, 20);
     line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
@@ -315,7 +316,7 @@ void radar(float xloc, float yloc)
   
   else
   {
-    stroke(0, 255, 0);
+    stroke(0, 255, 0); //green flash
     strokeWeight(2);  
     diam -= 120;
   }//end else 
@@ -384,7 +385,7 @@ void controls()
 
 void logo()
 {
-  fill(255);
+  fill(white);
   textFont(Space_tech);
   text("deltacorp", 10, height-10);
-}
+}//end logo()
