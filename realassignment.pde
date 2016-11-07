@@ -83,21 +83,15 @@ void draw()
   background(0); //black background
   frameRate(12);  
   //if key is pressed chane imageX to give impression of the ship moving
-  if (keyPressed)
+  if(keyPressed && keyCode == LEFT)
   {
-    if(keyCode == LEFT)
-    {
-      imageX+=2;    //increment by 1
-    }//end if
+    imageX+=2;    //increment by 1
   }//end if
-  if (keyPressed)
+  if(keyPressed && keyCode == RIGHT)
   {
-    if(keyCode == RIGHT)
-    {
-      imageX-=2;    //decrement by 1
-    }//end if
+    imageX-=2;    //decrement by 1
   }//end if
-  image(img2, imageX, imageY);
+  image(img3, imageX, imageY);    //image background
   grid();    //display a grid 
   frame();
   move();    //used to control movement of the "scanner"
@@ -277,6 +271,18 @@ void data(float xloc, float yloc)
    text(gunsStatus, xloc+80, yloc+60);
    }//end if
   }//end if
+  
+  int coordX = mouseX;
+  int coordY = mouseY;
+  String coordXFormatted = nf(coordX, 3, 0);
+  String coordYFormatted = nf(coordY, 3, 0);
+  
+  fill(white);
+  if(mouseY< 400)
+  {
+  text(coordXFormatted, width/2-35, 465);
+  text(coordYFormatted, width/2+5, 465);
+  }//end if
 }//end data
 
 void crosshair()
@@ -285,19 +291,22 @@ void crosshair()
   strokeWeight(2);
   stroke(255, 0, 0);    //red
   //move crosshair by mouse
-  ellipse(mouseX, mouseY, 30, 30);
-  ellipse(mouseX, mouseY, 50, 50);
-  line(mouseX-30, mouseY-30, mouseX+30, mouseY+30);
-  line(mouseX+30, mouseY-30, mouseX-30, mouseY+30);
-  
-  if(mousePressed && gunsAmmo > 0 && mouseY < 399)    //if mouse pressed and there is ammo left and mouseY is less than 399
+  if(mouseY<400)
   {
-    noFill();
-    stroke(yellow);
-    //white crosshair within main one when mouse clicked
-    ellipse(mouseX, mouseY, 20, 20);
-    line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
-    line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
+    ellipse(mouseX, mouseY, 30, 30);
+    ellipse(mouseX, mouseY, 50, 50);
+    line(mouseX-30, mouseY-30, mouseX+30, mouseY+30);
+    line(mouseX+30, mouseY-30, mouseX-30, mouseY+30);
+    
+    if(mousePressed && mouseButton==LEFT && gunsAmmo > 0 && mouseY < 399)   //if mouse pressed and there is ammo left and mouseY is less than 399
+    {
+      noFill();
+      stroke(yellow);
+      //white crosshair within main one when mouse clicked
+      ellipse(mouseX, mouseY, 20, 20);
+      line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
+      line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
+    }//end if
   }//end if
   
   /*----stationary central crosshair----
@@ -403,3 +412,7 @@ void logo()
   textFont(Space_tech);
   text("deltacorp", 10, height-10);
 }//end logo()
+
+
+//temperature? overheating?  bottom shape with semi transparency? bar chart? mouseX and Y co-ord on screen
+//fix mouse co-ord for firing weapons. there is an area outside KA that allows fire
