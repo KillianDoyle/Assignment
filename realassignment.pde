@@ -26,10 +26,14 @@ PFont Digi_tech;
 PFont Digi_tech2;
 PFont Space_tech;
 
-//image
+//images
 PImage img;
 PImage img2;
 PImage img3;
+PImage earth;
+PImage hell;
+PImage moon;
+PImage asteroid;
 //image position
 float imageX= -300;
 float imageY= -100;
@@ -66,12 +70,12 @@ void setup()
   img = loadImage("space.jpg");
   img2 = loadImage("space2.jpg");
   img3 = loadImage("space3.jpg");
+  asteroid = loadImage("asteroid.png");
   now = millis();    //used for delay in flashing message
   //buttons that feature in controls()
   button1 = new Button(360, 420, blue, blue2);
   button2 = new Button(400, 420, red, red2);
   button3 = new Button(440, 420, green, green2);
-
 }//end setup()
 
 void draw()
@@ -150,12 +154,9 @@ void fuel(float xloc, float yloc)
   
   if (millis() - now > delay)    //flashing warning message
   { 
-    //change flag
-    flash = !flash;
-    //reset counter
-    now = millis();
+    flash = !flash; //change flag
+    now = millis(); //reset counter
   }//end if
-  
   if(fuel<6 && fuel>0)
   {
     if (flash)
@@ -183,14 +184,25 @@ void move()
   {
     x = 0;   //x is reset to 0 to start again
   }//end if
-}//end scan
+}//end move()
 
 void scanner()
 {
  stroke(red2);
  line(x, y, x, height);
  fill(red2);
- text("SCANNING...", 362, 500);
+ textFont(Digi_tech);
+ if (millis() - now > delay)    //flashing warning message
+ { 
+   //change flag
+   flash = !flash;
+   //reset counter
+   now = millis();
+  }//end if
+  if(flash)
+  {
+     text("SCANNING...", 362, 500);
+  }//end if
 }//end scanner
 
 void data(float xloc, float yloc)
@@ -213,10 +225,12 @@ void data(float xloc, float yloc)
   }//end if
   
   //create strings to display data
-  String oxy = "02: " + oxyLevel;
+  String oxyLevelFormatted = nf(oxyLevel, 2, 1);    //format oxygen level to 99.9
+  String damageFormatted = nf(damage, 2, 1);
+  String oxy = "02: " + oxyLevelFormatted;
   String msl = "MSL: " + mslQty;
   String guns = "GUN: " + gunsAmmo;
-  String dmg = "DMG: " + damage;
+  String dmg = "DMG: " + damageFormatted;    //format damage level to 99.9
   
   //display data
   fill(255);
