@@ -91,9 +91,7 @@ void draw()
     imageX-=2;    //decrement by 1
   }//end if
   image(img3, imageX, imageY);    //image background
-  grid();    //display a grid 
-  move();    //used to control movement of the "scanner"
-  //if DOWN key is pushed the scanner function is called
+  //if DOWN is pressed the scanner function is called
   if (keyPressed)
   {
     if (keyCode == DOWN)
@@ -101,6 +99,9 @@ void draw()
       scanner();    //a "scanner" that pans the screen
     }//end if
   }
+  grid();    //display a grid 
+  scannerText();
+  move();    //used to control movement of the "scanner"
   frame();
   crosshair();
   fuel(width * 0.62, height-25);
@@ -172,11 +173,11 @@ void fuel(float xloc, float yloc)
 
 void move() 
 {
-  x = x + speed;
-  if (x > width)    //if x is bigger than the HUD
-  {
-    x = 0;   //x is reset to 0 to start again
-  }//end if
+    x = x + speed;
+    if (x > width)    //if x is bigger than the HUD
+    {
+      x = 0;   //x is reset to 0 to start again
+    }//end if
 }//end move()
 
 void scanner()
@@ -189,8 +190,11 @@ void scanner()
  {
    stroke(255- (i* intensityChange+50), 0, 0);
    line(x-i, y-i, x-i, height);
- }
+ }//end for
+}//end scanner
 
+void scannerText()
+{
  fill(red2);
  textFont(Digi_tech);
  if (millis() - now > delay)    //flashing warning message
@@ -204,7 +208,7 @@ void scanner()
   {
      text("SCANNING...", 362, 500);
   }//end if
-}//end scanner
+}//end scannText()
 
 void data(float xloc, float yloc)
 {
