@@ -388,7 +388,7 @@ void grid()
 {
   //grid calculations
   int widthSpace = 40;     
-  int heightSpace = 40; 
+  int heightSpace = 40;
   strokeWeight(2);
   stroke(gridStroke);    //set line color
   
@@ -401,6 +401,14 @@ void grid()
    {
      line(0, w, width, w);
    }//end for loop
+   
+  noStroke();
+  fill(gridStroke, 60);
+  rect(0, 401, width, height);
+  triangle(0, 320, 120, 399, 0, 399);
+  triangle(width, 320, 681, 399, width, 399);
+  triangle(0, 0, 0, 79, 79, 0);
+  triangle(721, 0, width, 79, width, 0);
 }//end grid()
 
 void controls()
