@@ -1,5 +1,4 @@
 //----variables----//
-
 //colors
 int green = color(131, 255, 145); 
 int green2 = color(0, 255, 0);
@@ -93,7 +92,6 @@ void draw()
   }//end if
   image(img3, imageX, imageY);    //image background
   grid();    //display a grid 
-  frame();
   move();    //used to control movement of the "scanner"
   //if DOWN key is pushed the scanner function is called
   if (keyPressed)
@@ -103,6 +101,7 @@ void draw()
       scanner();    //a "scanner" that pans the screen
     }//end if
   }
+  frame();
   crosshair();
   fuel(width * 0.62, height-25);
   time(width * 0.46, height * 0.04);  //digital clock with position passed
@@ -137,7 +136,7 @@ void fuel(float xloc, float yloc)
     line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for fuel gauge
     xloc-=10;    //decrement x location by 10
   }//end for
-  stroke(255, 0, 0);    //change color to red for "low" part of guel gauge
+  stroke(red2);    //change color to red for "low" part of guel gauge
   line(453, 585, 505, 585);    //draw line for "low" part of fuel gauge
   xloc = 496;      //reset xloc to start of gauge
   for(int a=0; a<6; a++)
@@ -184,6 +183,14 @@ void scanner()
 {
  stroke(red2);
  line(x, y, x, height);
+ int trailLength = 30;
+ float intensityChange = 255.0f / trailLength;
+ for(int i = 0; i < trailLength-15; i++)
+ {
+   stroke(255- (i* intensityChange+50), 0, 0);
+   line(x-i, y-i, x-i, height);
+ }
+
  fill(red2);
  textFont(Digi_tech);
  if (millis() - now > delay)    //flashing warning message
@@ -227,19 +234,19 @@ void data(float xloc, float yloc)
   String dmg = "DMG: " + damageFormatted;    //format damage level to 99.9
   
   //display data
-  fill(255);
+  fill(white);
   text(oxy, xloc, yloc);
   text(msl, xloc, yloc+30);
   text(guns, xloc, yloc+60);
   text(dmg, xloc, yloc+90);
   
   //-------missiles------//
-  fill(255);
+  fill(white);
   text(mslStatus, xloc+80, yloc+30);
   if(mslQty < 5 && mslQty > 0)
   {
    mslStatus = "LOW";
-   fill(255, 255, 0);
+   fill(yellow);
    text(mslStatus, xloc+80, yloc+30);
   }//end if
   
@@ -254,12 +261,12 @@ void data(float xloc, float yloc)
   }//end if
   
   //-------guns-------//
-  fill(255);
+  fill(white);
   text(gunsStatus, xloc+80, yloc+60);
   if(gunsAmmo < 50 && gunsAmmo>0)
   {
    gunsStatus = "LOW";
-   fill(255, 255, 0);
+   fill(yellow);
    text(gunsStatus, xloc+80, yloc+60);
   }//end if
   if(gunsAmmo ==0)
@@ -280,8 +287,7 @@ void data(float xloc, float yloc)
   fill(white);
   if(mouseY< 400)
   {
-  text(coordXFormatted, width/2-35, 465);
-  text(coordYFormatted, width/2+5, 465);
+  text("CoOrd " + coordXFormatted + coordYFormatted, xloc, yloc-30);
   }//end if
 }//end data
 
@@ -289,7 +295,7 @@ void crosshair()
 {
   noFill();
   strokeWeight(2);
-  stroke(255, 0, 0);    //red
+  stroke(red2);    //red
   //move crosshair by mouse
   if(mouseY<400)
   {
@@ -319,7 +325,7 @@ void crosshair()
 void time(float xloc, float yloc)
 {
   textFont(Digi_tech);
-  fill(255);
+  fill(white);
   int s = second(); 
   int m = minute(); 
   int h = hour(); 
@@ -329,7 +335,7 @@ void time(float xloc, float yloc)
 void radar(float xloc, float yloc)
 { 
   strokeWeight(2);
-  stroke(255); 
+  stroke(white); 
   noFill();
   if (diam <= 120)
   {                               
@@ -339,12 +345,12 @@ void radar(float xloc, float yloc)
   
   else
   {
-    stroke(0, 255, 0); //green flash
+    stroke(green2); //green flash
     strokeWeight(2);  
     diam -= 120;
   }//end else 
   
-  fill(255, 40 ,0);
+  fill(red2);
   ellipse(xloc, yloc, 10, 10);
 }//end radar()
 
@@ -361,8 +367,6 @@ void frame()
   line(0, 80, 80, 0);
   line(720, 0, 800, 80);
   
-  //blue center
-  //stroke(blue);
   strokeWeight(4);
   //outer center piece
   line(320, 120, 320, 280);  //left vertical
