@@ -26,6 +26,7 @@ int diam = 120;
 //font
 PFont Digi_tech;
 PFont Digi_tech2;
+PFont Digi_tech3;
 PFont Space_tech;
 
 //images
@@ -55,16 +56,26 @@ int now;
 //flag
 boolean flash = false;
 
+int wpnCol1 = white;
+int wpnCol2 = red;
+
 //class Button, used in controls()
 Button button1;
 Button button2;
 Button button3;
+//class WpnSelect, used in controls()
+Switch wpn;
+int gunFlag = 1;
+int mslFlag = 0;
+int fuelFlag=0;
+Switch engine;
 
 void setup()
 {
   size(800, 600);
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   Digi_tech2 = loadFont("Digitaltech-20.vlw");
+  Digi_tech3 = loadFont("Digitaltech-8.vlw");
   Space_tech = loadFont("Spac3tech-20.vlw");
   textFont(Digi_tech);
   textFont(Digi_tech2);
@@ -78,26 +89,40 @@ void setup()
   button1 = new Button(360, 420, darkBlue, blue);
   button2 = new Button(400, 420, darkRed, red);
   button3 = new Button(440, 420, darkGreen, green);
+  wpn = new Switch("Weapons", "GUN", "MSL", 483, 485, 35, 20, red, red);
+  engine = new Switch("Engines", "OFF", "ON", 243, 485, 35, 20, yellow, yellow);
 }//end setup()
 
 void draw()
 {
   background(0); //black background
-  frameRate(12);  
+  frameRate(12);  //slow down frame rate to control animation and ammunition consumption
   //if key is pressed chane imageX to give impression of the ship moving
-  if(keyPressed && keyCode == LEFT)
+  if(fuelFlag==1 && fuel > 0)
   {
-    imageX+=2;    //increment by 1
+    if(keyPressed && keyCode == LEFT)
+    {
+      imageX+=2;    //increment by 1
+    }//end if
+    if(keyPressed && keyCode == RIGHT)
+    {
+      imageX-=2;    //decrement by 1
+    }//end if
+      if(keyPressed && keyCode == UP)
+    {
+      imageY+=2;    //increment by 1
+    }//end if
+    if(keyPressed && keyCode == DOWN)
+    {
+      imageY-=2;    //decrement by 1
+    }//end if
   }//end if
-  if(keyPressed && keyCode == RIGHT)
-  {
-    imageX-=2;    //decrement by 1
-  }//end if
+  //imageX < -16 && imageX >-760 && imageY < -8 && imageY > -260
   image(img3, imageX, imageY);    //image background
   //if DOWN is pressed the scanner function is called
   if (keyPressed)
   {
-    if (keyCode == DOWN)
+    if (keyCode == CONTROL)
     {
       scanner();    //a "scanner" that pans the screen
     }//end if
@@ -110,9 +135,9 @@ void draw()
    appears above the transparent elemnent of the control panel */
   if (keyPressed)
   {
-    if (keyCode == DOWN)
+    if (keyCode == CONTROL)
     {
-      scannerText();    
+      scannerText(365, 505);    
     }//end if
   }
   crosshair();
@@ -124,14 +149,19 @@ void draw()
   logo();
   println(mouseX);
   println(mouseY);
+  println(imageX);
+  println(imageY);
 }//end draw()
 
 void fuel(float xloc, float yloc)
 {
   strokeWeight(1);
-  if(frameCount % 90 == 0)    //set delay for fuel consumption
+  if(fuelFlag==1)
   {
-    fuel-=1;
+    if(frameCount % 90 == 0)    //set delay for fuel consumption
+    {
+      fuel-=1;
+    }//end if
   }//end if
   fill(green);
   noStroke();
@@ -140,7 +170,7 @@ void fuel(float xloc, float yloc)
     rect((xloc)-i*10, yloc, 6, 8);    //draws blocks to reprisent fuel amount
   }//end for
   fill(white);
-  textFont(Digi_tech);
+  textFont(Digi_tech3);
   text("FUEL", width/2-19, 558);    //print "FUEL" above fuel gauge
   stroke(white);
   line(xloc+8, yloc+10, 305, yloc+10);    //draw horizontal line for fuel gauge
@@ -205,7 +235,7 @@ void scanner()
  }//end for
 }//end scanner
 
-void scannerText()
+void scannerText(int xloc, int yloc)
 {
  fill(red);
  textFont(Digi_tech);
@@ -218,7 +248,7 @@ void scannerText()
   }//end if
   if(flash)
   {
-     text("SCANNING...", 362, 500);
+     text("SCANNING...", xloc, yloc);
   }//end if
 }//end scannText()
 
@@ -229,16 +259,13 @@ void data(float xloc, float yloc)
   {
   oxyLevel = random(18, 21);  //random numbers of realistic normal oxygen levels
   }//end if
-  if(mousePressed && mouseButton == LEFT && mouseY< 399)  //if mouse pressed and left click pressed and mouseY is less than 399
+  if(mousePressed && mouseButton == LEFT && mouseY< 399 && gunFlag==1)  //if mouse pressed and left click pressed and mouseY is less than 399
   {
-    gunsAmmo-=0.1;    //decriment ammunition
+    gunsAmmo-=0.001;    //decriment ammunition
   }//end if
-  if(keyPressed)    //if key is pressed ONCE
+  if(mousePressed && mouseButton == LEFT && mouseY< 399 && mslFlag==1)  //if mouse pressed and left click pressed and mouseY is less than 399
   {
-     if(keyCode == UP)
-    {
-      mslQty-=0.1;  //decriment missile quantity
-    }//end if
+    mslQty-=0.001;  //decriment missile quantity
   }//end if
   
   //create strings to display data
@@ -326,10 +353,19 @@ void crosshair()
     line(mouseX-30, mouseY-30, mouseX+30, mouseY+30);
     line(mouseX+30, mouseY-30, mouseX-30, mouseY+30);
     
-    if(mousePressed && mouseButton==LEFT && gunsAmmo > 0 && mouseY < 399)   //if mouse pressed and there is ammo left and mouseY is less than 399
+    if(mousePressed && mouseButton == LEFT && gunsAmmo > 0 && mouseY < 399 && gunFlag == 1)   //if mouse pressed and there is ammo left and mouseY is less than 399
     {
       noFill();
       stroke(yellow);
+      //white crosshair within main one when mouse clicked
+      ellipse(mouseX, mouseY, 20, 20);
+      line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
+      line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
+    }//end if
+    if(mousePressed && mouseButton == LEFT && mslQty > 0 && mouseY < 399 && mslFlag == 1)   //if mouse pressed and there is ammo left and mouseY is less than 399
+    {
+      noFill();
+      stroke(255, 155, 5); //orange
       //white crosshair within main one when mouse clicked
       ellipse(mouseX, mouseY, 20, 20);
       line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
@@ -432,6 +468,9 @@ void controls()
   button1.run();
   button2.run();
   button3.run();
+  wpn.run();
+  engine.run();
+ 
 }//end controls
 
 void logo()
