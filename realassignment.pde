@@ -158,7 +158,7 @@ void draw()
   }
   crosshair();
   fuel(width * 0.62, height-25);
-  time(width * 0.46, height * 0.04);  //digital clock with position passed
+  time(width * 0.46, height * 0.03);  //digital clock with position passed
   radar(width * 0.125, height * 0.83);    //radar with position passed
   data(width * 0.81, height * 0.83);    //data with position passed
   controls();
@@ -435,7 +435,26 @@ void frame()
   line(0, 80, 80, 0);
   line(720, 0, 800, 80);
   
-  strokeWeight(4);
+  strokeWeight(1);
+  noFill();
+  ellipse(width/2, height/3, 350, 350);
+  ellipse(width/2, height/3, 355, 355);
+  ellipse(width/2, height/3, 320, 320);
+  ellipse(width/2, height/3, 325, 325);
+  
+  line(width/2-20, height/3-50, width/2-60, height/3+50);
+  line(width/2-10, height/3-50, width/2-50, height/3+50);
+  
+  line(width/2+20, height/3-50, width/2+60, height/3+50);
+  line(width/2+10, height/3-50, width/2+50, height/3+50);
+  
+  line(580, 200, width, 200);
+  line(220, 200, 0, 200);
+  
+  strokeWeight(6);
+  line(width/2, height/3-10, width/2+10, height/3+10);
+  line(width/2, height/3-10, width/2-10, height/3+10);
+  /*
   //outer center piece
   line(320, 120, 320, 280);  //left vertical
   line(320, 120, 360, 120);  //top left horizontal
@@ -450,6 +469,7 @@ void frame()
   line(440, 160, 440, 240);  //right verical
   line(440, 160, 420, 160);  //top right horizontal
   line(440, 240, 420, 240);  //bottom right horizontal
+  */
 }//end frame()
 
 void grid()
