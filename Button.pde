@@ -35,17 +35,17 @@ class Button
     {
       if(mouseX >=xloc-r1 && mouseX <=xloc+r1 && mouseY >= yloc-r2 && mouseY <= yloc+r2)
       {
-        if(fillC==red)
+        if(fillC==darkRed)
         {
-          gridStroke = red;
+          gridStroke = gridRed;
         }
-        else if(fillC==blue)
+        else if(fillC==darkBlue)
         {
-          gridStroke = blue;
+          gridStroke = gridBlue;
         }
-        else if(fillC==green)
+        else if(fillC==darkGreen)
         {
-          gridStroke = green;
+          gridStroke = gridGreen;
         }//end else if
       }//end if
      }//end if

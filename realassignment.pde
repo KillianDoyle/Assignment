@@ -1,14 +1,17 @@
 //----variables----//
 //colors
-int green = color(131, 255, 145); 
-int green2 = color(0, 255, 0);
-int red = color(255, 82, 82);
-int red2 = color(255, 0 ,0);
-int blue = color(82, 167, 255);
-int blue2 = color (0, 0, 255);
+int gridGreen = color(131, 255, 145); 
+int green = color(0, 255, 0);
+int darkGreen = color(8, 137, 0);
+int gridRed = color(255, 82, 82);
+int red = color(255, 0 ,0);
+int darkRed = color(180, 0, 0);
+int gridBlue = color(82, 167, 255);
+int blue = color (0, 0, 255);
+int darkBlue = color(5, 0, 180);
 int white = color(255); 
 int yellow = color(250, 255, 0);
-int gridStroke = blue;    //set default grid to blue
+int gridStroke = gridBlue;    //set default grid to gridBlue
 
 //scanner
 float speed = 10; 
@@ -72,9 +75,9 @@ void setup()
   asteroid = loadImage("asteroid.png");
   now = millis();    //used for delay in flashing message
   //buttons that feature in controls()
-  button1 = new Button(360, 420, blue, blue2);
-  button2 = new Button(400, 420, red, red2);
-  button3 = new Button(440, 420, green, green2);
+  button1 = new Button(360, 420, darkBlue, blue);
+  button2 = new Button(400, 420, darkRed, red);
+  button3 = new Button(440, 420, darkGreen, green);
 }//end setup()
 
 void draw()
@@ -130,7 +133,7 @@ void fuel(float xloc, float yloc)
   {
     fuel-=1;
   }//end if
-  fill(green2);
+  fill(green);
   noStroke();
   for (int i=0; i<fuel; i++)
   {
@@ -146,7 +149,7 @@ void fuel(float xloc, float yloc)
     line((xloc+8), yloc+10, xloc+8, yloc+4);   //draw vertical lines for fuel gauge
     xloc-=10;    //decrement x location by 10
   }//end for
-  stroke(red2);    //change color to red for "low" part of guel gauge
+  stroke(red);    //change color to gridRed for "low" part of guel gauge
   line(453, 585, 505, 585);    //draw line for "low" part of fuel gauge
   xloc = 496;      //reset xloc to start of gauge
   for(int a=0; a<6; a++)
@@ -165,7 +168,7 @@ void fuel(float xloc, float yloc)
     if (flash)
     {
     textFont(Digi_tech2);    //larger font
-    fill(red2);
+    fill(red, 150);
     text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print low fuel message
     }//end if
   }//end if
@@ -173,9 +176,9 @@ void fuel(float xloc, float yloc)
   {
     if (flash)
     {
-    textFont(Digi_tech2);    //larger font
-    fill(red2);
-    text("FUEL EMPTY", width/2-100, height/2+20);    //print empty message
+      textFont(Digi_tech2);    //larger font
+      fill(red, 150);
+      text("FUEL EMPTY", width/2-100, height/2+20);    //print empty message
     }//end if
   }//end if
 }//end fuel()
@@ -191,7 +194,7 @@ void move()
 
 void scanner()
 {
- stroke(red2);
+ stroke(red);
  line(x, y, x, height);
  int trailLength = 30;
  float intensityChange = 255.0f / trailLength;
@@ -204,7 +207,7 @@ void scanner()
 
 void scannerText()
 {
- fill(red2);
+ fill(red);
  textFont(Digi_tech);
  if (millis() - now > delay)    //flashing warning message
  { 
@@ -266,7 +269,7 @@ void data(float xloc, float yloc)
   if(mslQty < 1)
   {
    mslStatus = "EMPTY";
-   fill(red2);
+   fill(red);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
      text(mslStatus, xloc+80, yloc+30);
@@ -285,7 +288,7 @@ void data(float xloc, float yloc)
   if(gunsAmmo ==0)
   {
    gunsStatus = "EMPTY";
-   fill(red2);
+   fill(red);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
    text(gunsStatus, xloc+80, yloc+60);
@@ -294,6 +297,7 @@ void data(float xloc, float yloc)
   
   int coordX = mouseX;
   int coordY = mouseY;
+  //format floats to 3 places before decimal, none after
   String coordXFormatted = nf(coordX, 3, 0);
   String coordYFormatted = nf(coordY, 3, 0);
   
@@ -301,11 +305,11 @@ void data(float xloc, float yloc)
   text("CoOrd ", xloc, yloc-30);
   if (mouseY < 400)
   {
-   text(coordXFormatted + coordYFormatted, xloc+60, yloc-30);
+   text(coordXFormatted + coordYFormatted, xloc+60, yloc-30);  //if crosshair is in KA show co-ordinates
   }//end if
   else
   {
-     text("000000", xloc+60, yloc-30);
+     text("000000", xloc+60, yloc-30);    //if crosshair is not active show no co-ordinates
   }//end else
 }//end data
 
@@ -313,7 +317,7 @@ void crosshair()
 {
   noFill();
   strokeWeight(2);
-  stroke(red2);    //red
+  stroke(red);    //gridRed
   //move crosshair by mouse
   if(mouseY<400)
   {
@@ -332,12 +336,6 @@ void crosshair()
       line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
     }//end if
   }//end if
-  
-  /*----stationary central crosshair----
-  ellipse(width/2, height/2, 30, 30);
-  line(width/2-30, height/2-30, width/2+30, height/2+30);
-  line(width/2+30, height/2-30, width/2-30, height/2+30);
-  */
 }//end crosshair()
 
 void time(float xloc, float yloc)
@@ -363,12 +361,12 @@ void radar(float xloc, float yloc)
   
   else
   {
-    stroke(green2); //green flash
+    stroke(green); //gridGreen flash
     strokeWeight(2);  
     diam -= 120;
   }//end else 
   
-  fill(red2);
+  fill(red);
   ellipse(xloc, yloc, 10, 10);
 }//end radar()
 
