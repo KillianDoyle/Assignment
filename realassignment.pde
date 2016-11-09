@@ -117,7 +117,23 @@ void draw()
       imageY-=2;    //decrement by 1
     }//end if
   }//end if
-  //imageX < -16 && imageX >-760 && imageY < -8 && imageY > -260
+  //set boundaries
+  if (imageX > -17)
+  {
+    imageX = imageX - 2;
+  }//end if
+  if(imageX < -760)
+  {
+    imageX = imageX + 2;
+  }//end if
+  if(imageY > -8)
+  {
+    imageY = imageY  -2;
+  }//end if
+  if(imageY < -260)
+  {
+    imageY = imageY +2;
+  }//end if
   image(img3, imageX, imageY);    //image background
   //if DOWN is pressed the scanner function is called
   if (keyPressed)
@@ -202,7 +218,7 @@ void fuel(float xloc, float yloc)
     text("FUEL CRITICALLY LOW", width/2-175, height/2+20);    //print low fuel message
     }//end if
   }//end if
-  if(fuel<=0)
+  if(fuel <= 0 && fuelFlag == 1)
   {
     if (flash)
     {
