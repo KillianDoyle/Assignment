@@ -100,9 +100,18 @@ void draw()
     }//end if
   }
   grid();    //display a grid 
-  scannerText();
   move();    //used to control movement of the "scanner"
   frame();
+ /*if DOWN is pressed the scannerText() function is called
+   this function is called seperately to scanner() so the text
+   appears above the transparent elemnent of the control panel */
+  if (keyPressed)
+  {
+    if (keyCode == DOWN)
+    {
+      scannerText();    
+    }//end if
+  }
   crosshair();
   fuel(width * 0.62, height-25);
   time(width * 0.46, height * 0.04);  //digital clock with position passed
@@ -289,10 +298,15 @@ void data(float xloc, float yloc)
   String coordYFormatted = nf(coordY, 3, 0);
   
   fill(white);
-  if(mouseY< 400)
+  text("CoOrd ", xloc, yloc-30);
+  if (mouseY < 400)
   {
-  text("CoOrd " + coordXFormatted + coordYFormatted, xloc, yloc-30);
+   text(coordXFormatted + coordYFormatted, xloc+60, yloc-30);
   }//end if
+  else
+  {
+     text("000000", xloc+60, yloc-30);
+  }//end else
 }//end data
 
 void crosshair()
@@ -407,7 +421,7 @@ void grid()
    }//end for loop
    
   noStroke();
-  fill(gridStroke, 60);
+  fill(gridStroke, 80);
   rect(0, 401, width, height);
   triangle(0, 320, 120, 399, 0, 399);
   triangle(width, 320, 681, 399, width, 399);

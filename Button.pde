@@ -46,7 +46,7 @@ class Button
         else if(fillC==green)
         {
           gridStroke = green;
-        }
+        }//end else if
       }//end if
      }//end if
   }//end display()
