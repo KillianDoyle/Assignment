@@ -1,4 +1,5 @@
 //----variables----//
+
 //colors
 int gridGreen = color(131, 255, 145); 
 int green = color(0, 255, 0);
@@ -33,10 +34,6 @@ PFont Space_tech;
 PImage img;
 PImage img2;
 PImage img3;
-PImage earth;
-PImage hell;
-PImage moon;
-PImage asteroid;
 //image position
 float imageX= -300;
 float imageY= -100;
@@ -55,20 +52,22 @@ int delay = 1000;// ONE SEC
 int now; 
 //flag
 boolean flash = false;
-
-int wpnCol1 = white;
-int wpnCol2 = red;
-
+ 
 //class Button, used in controls()
 Button button1;
 Button button2;
 Button button3;
 //class WpnSelect, used in controls()
 Switch wpn;
+Switch engine;
+
+//flags for switches
 int gunFlag = 1;
 int mslFlag = 0;
 int fuelFlag=0;
-Switch engine;
+
+
+
 
 void setup()
 {
@@ -83,7 +82,6 @@ void setup()
   img = loadImage("space.jpg");
   img2 = loadImage("space2.jpg");
   img3 = loadImage("space3.jpg");
-  asteroid = loadImage("asteroid.png");
   now = millis();    //used for delay in flashing message
   //buttons that feature in controls()
   button1 = new Button(360, 420, darkBlue, blue);
@@ -92,6 +90,8 @@ void setup()
   wpn = new Switch("Weapons", "GUN", "MSL", 483, 485, 35, 20, red, red);
   engine = new Switch("Engines", "OFF", "ON", 243, 485, 35, 20, yellow, yellow);
 }//end setup()
+
+
 
 void draw()
 {
@@ -134,7 +134,7 @@ void draw()
   {
     imageY = imageY +2;
   }//end if
-  image(img3, imageX, imageY);    //image background
+  image(img2, imageX, imageY);    //image background
   //if DOWN is pressed the scanner function is called
   if (keyPressed)
   {
@@ -146,28 +146,30 @@ void draw()
   grid();    //display a grid 
   move();    //used to control movement of the "scanner"
   frame();
- /*if DOWN is pressed the scannerText() function is called
+ /*if CONTROL is pressed the scannerText() function is called
    this function is called seperately to scanner() so the text
    appears above the transparent elemnent of the control panel */
   if (keyPressed)
   {
     if (keyCode == CONTROL)
     {
-      scannerText(365, 505);    
+      scannerText(365, 505);            //scanner with position passed
     }//end if
   }
   crosshair();
-  fuel(width * 0.62, height-25);
-  time(width * 0.46, height * 0.03);  //digital clock with position passed
-  radar(width * 0.125, height * 0.83);    //radar with position passed
+  fuel(width * 0.62, height-25);        //fuel with position passed
+  time(width * 0.46, height * 0.03);    //digital clock with position passed
+  radar(width * 0.125, height * 0.83);  //radar with position passed
   data(width * 0.81, height * 0.83);    //data with position passed
   controls();
-  logo();
+  logo(10, height-10);                  //logo with location passed
   println(mouseX);
   println(mouseY);
   println(imageX);
   println(imageY);
 }//end draw()
+
+
 
 void fuel(float xloc, float yloc)
 {
@@ -209,7 +211,7 @@ void fuel(float xloc, float yloc)
     flash = !flash; //change flag
     now = millis(); //reset counter
   }//end if
-  if(fuel<6 && fuel>0)
+  if(fuel<6 && fuel>0 &&fuelFlag == 1)
   {
     if (flash)
     {
@@ -238,6 +240,8 @@ void move()
     }//end if
 }//end move()
 
+
+
 void scanner()
 {
  stroke(red);
@@ -250,6 +254,8 @@ void scanner()
    line(x-i, y-i, x-i, height);
  }//end for
 }//end scanner
+
+
 
 void scannerText(int xloc, int yloc)
 {
@@ -267,6 +273,8 @@ void scannerText(int xloc, int yloc)
      text("SCANNING...", xloc, yloc);
   }//end if
 }//end scannText()
+
+
 
 void data(float xloc, float yloc)
 {
@@ -304,9 +312,9 @@ void data(float xloc, float yloc)
   text(mslStatus, xloc+80, yloc+30);
   if(mslQty < 5 && mslQty > 0)
   {
-   mslStatus = "LOW";
-   fill(yellow);
-   text(mslStatus, xloc+80, yloc+30);
+     mslStatus = "LOW";
+     fill(yellow);
+     text(mslStatus, xloc+80, yloc+30);
   }//end if
   
   if(mslQty < 1)
@@ -315,7 +323,7 @@ void data(float xloc, float yloc)
    fill(red);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
-     text(mslStatus, xloc+80, yloc+30);
+       text(mslStatus, xloc+80, yloc+30);
    }//end if
   }//end if
   
@@ -324,17 +332,17 @@ void data(float xloc, float yloc)
   text(gunsStatus, xloc+80, yloc+60);
   if(gunsAmmo < 50 && gunsAmmo>0)
   {
-   gunsStatus = "LOW";
-   fill(yellow);
-   text(gunsStatus, xloc+80, yloc+60);
+     gunsStatus = "LOW";
+     fill(yellow);
+     text(gunsStatus, xloc+80, yloc+60);
   }//end if
   if(gunsAmmo ==0)
   {
-   gunsStatus = "EMPTY";
-   fill(red);
+     gunsStatus = "EMPTY";
+     fill(red);
    if(frameCount % 10 == 0)    //make "EMPTY" flash
    {
-   text(gunsStatus, xloc+80, yloc+60);
+       text(gunsStatus, xloc+80, yloc+60);
    }//end if
   }//end if
   
@@ -348,13 +356,15 @@ void data(float xloc, float yloc)
   text("CoOrd ", xloc, yloc-30);
   if (mouseY < 400)
   {
-   text(coordXFormatted + coordYFormatted, xloc+60, yloc-30);  //if crosshair is in KA show co-ordinates
+     text(coordXFormatted + coordYFormatted, xloc+60, yloc-30);  //if crosshair is in KA show co-ordinates
   }//end if
   else
   {
      text("000000", xloc+60, yloc-30);    //if crosshair is not active show no co-ordinates
   }//end else
 }//end data
+
+
 
 void crosshair()
 {
@@ -364,6 +374,7 @@ void crosshair()
   //move crosshair by mouse
   if(mouseY<400)
   {
+    noCursor();
     ellipse(mouseX, mouseY, 30, 30);
     ellipse(mouseX, mouseY, 50, 50);
     line(mouseX-30, mouseY-30, mouseX+30, mouseY+30);
@@ -388,7 +399,13 @@ void crosshair()
       line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
     }//end if
   }//end if
+  else
+  {
+    cursor(HAND);
+  }//end else
 }//end crosshair()
+
+
 
 void time(float xloc, float yloc)
 {
@@ -399,6 +416,8 @@ void time(float xloc, float yloc)
   int h = hour(); 
   text(h + ":" + nf(m, 2) + ":" + nf(s, 2), xloc, yloc);
 }//end time()
+
+
 
 void radar(float xloc, float yloc)
 { 
@@ -422,6 +441,8 @@ void radar(float xloc, float yloc)
   ellipse(xloc, yloc, 10, 10);
 }//end radar()
 
+
+
 void frame()
 {
   strokeCap(SQUARE);
@@ -438,39 +459,28 @@ void frame()
   strokeWeight(1);
   noFill();
   ellipse(width/2, height/3, 350, 350);
-  ellipse(width/2, height/3, 355, 355);
+  ellipse(width/2, height/3, 358, 358);
   ellipse(width/2, height/3, 320, 320);
-  ellipse(width/2, height/3, 325, 325);
+  ellipse(width/2, height/3, 328, 328);
   
+  line(580, 200, width, 200);
+  line(220, 200, 0, 200);
+  
+  strokeWeight(2);
   line(width/2-20, height/3-50, width/2-60, height/3+50);
   line(width/2-10, height/3-50, width/2-50, height/3+50);
   
   line(width/2+20, height/3-50, width/2+60, height/3+50);
   line(width/2+10, height/3-50, width/2+50, height/3+50);
   
-  line(580, 200, width, 200);
-  line(220, 200, 0, 200);
+  
   
   strokeWeight(6);
   line(width/2, height/3-10, width/2+10, height/3+10);
   line(width/2, height/3-10, width/2-10, height/3+10);
-  /*
-  //outer center piece
-  line(320, 120, 320, 280);  //left vertical
-  line(320, 120, 360, 120);  //top left horizontal
-  line(320, 280, 360, 280);  //nottom right horizontal
-  line(480, 120, 480, 280);  //right vertical
-  line(480, 120, 440, 120);  //top right vertical
-  line(440, 280, 480, 280);  //bottom right vertical
-  //inner center piece
-  line(360, 160, 360, 240);  //left verical
-  line(360, 160, 380, 160);  //top left horizontal
-  line(360, 240, 380, 240);  //bottom left horizontal
-  line(440, 160, 440, 240);  //right verical
-  line(440, 160, 420, 160);  //top right horizontal
-  line(440, 240, 420, 240);  //bottom right horizontal
-  */
 }//end frame()
+
+
 
 void grid()
 {
@@ -499,6 +509,8 @@ void grid()
   triangle(721, 0, width, 79, width, 0);
 }//end grid()
 
+
+
 void controls()
 {
   button1.run();
@@ -509,11 +521,13 @@ void controls()
  
 }//end controls
 
-void logo()
+
+
+void logo(int xloc, int yloc)
 {
   fill(white);
   textFont(Space_tech);
-  text("deltacorp", 10, height-10);
+  text("deltacorp", xloc, yloc);
 }//end logo()
 
 

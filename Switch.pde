@@ -10,8 +10,7 @@ class Switch
  int w= 20;
  int h = 10;
  int passedcol;
-
-
+ 
  
  //the co-ordinates and the two different colors of the buttons are passed.
  Switch(String name ,String text1, String text2, float x, float y, int w, int h, int col1, int passedcol)
