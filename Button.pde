@@ -35,6 +35,8 @@ class Button
     {
       if(mouseX >=xloc-r1 && mouseX <=xloc+r1 && mouseY >= yloc-r2 && mouseY <= yloc+r2)
       {
+        button.play();
+        button.rewind();
         if(fillC==darkRed)
         {
           gridStroke = gridRed;

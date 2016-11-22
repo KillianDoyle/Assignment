@@ -1,3 +1,14 @@
+import ddf.minim.*;
+
+Minim minim;
+AudioPlayer button;
+AudioPlayer toggle;
+AudioPlayer engines;
+AudioPlayer guns;
+AudioPlayer missile;
+AudioPlayer alarm;
+AudioInput input;
+
 //----variables----//
 
 //colors
@@ -25,6 +36,7 @@ float y = 0;
 int diam = 120;
 
 //font
+PFont Arial;
 PFont Digi_tech;
 PFont Digi_tech2;
 PFont Digi_tech3;
@@ -45,7 +57,7 @@ int gunsAmmo = 60;              //initial value for ammuniton
 float damage= random(90, 100);  //random variable for damage
 String mslStatus ="READY";      //set the initial missile weapon status to "READY"
 String gunsStatus = "READY";    //set the initial gun weapon status to "READY"
-int fuel = 20;                  //default fuel level
+int fuel = 10;                  //default fuel level
 
 //delay for flashing message
 int delay = 1000;// ONE SEC
@@ -72,6 +84,16 @@ int fuelFlag=0;
 void setup()
 {
   size(800, 600);
+  minim = new Minim(this);
+  button = minim.loadFile("Button.mp3");
+  toggle = minim.loadFile("Toggle.mp3");
+  engines = minim.loadFile("Engines.mp3");
+  guns = minim.loadFile("Laser_Blast.mp3");
+  missile = minim.loadFile("Missile.mp3");
+  alarm = minim.loadFile("Alarm.mp3");
+  input = minim.getLineIn();
+  
+  Arial = loadFont("Arial-Black-16.vlw");
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   Digi_tech2 = loadFont("Digitaltech-20.vlw");
   Digi_tech3 = loadFont("Digitaltech-8.vlw");
@@ -83,6 +105,7 @@ void setup()
   img2 = loadImage("space2.jpg");
   img3 = loadImage("space3.jpg");
   now = millis();    //used for delay in flashing message
+  
   //buttons that feature in controls()
   button1 = new Button(360, 420, darkBlue, blue);
   button2 = new Button(400, 420, darkRed, red);
@@ -140,11 +163,13 @@ void draw()
   {
     if (keyCode == CONTROL)
     {
+      move();    //used to control movement of the "scanner"
       scanner();    //a "scanner" that pans the screen
     }//end if
-  }
+  }//end if
+ 
   grid();    //display a grid 
-  move();    //used to control movement of the "scanner"
+  
   frame();
  /*if CONTROL is pressed the scannerText() function is called
    this function is called seperately to scanner() so the text
@@ -168,8 +193,6 @@ void draw()
   println(imageX);
   println(imageY);
 }//end draw()
-
-
 
 void fuel(float xloc, float yloc)
 {
@@ -213,6 +236,7 @@ void fuel(float xloc, float yloc)
   }//end if
   if(fuel<6 && fuel>0 &&fuelFlag == 1)
   {
+    alarm.play();
     if (flash)
     {
     textFont(Digi_tech2);    //larger font
@@ -231,8 +255,10 @@ void fuel(float xloc, float yloc)
   }//end if
 }//end fuel()
 
+
+
 void move() 
-{
+{  
     x = x + speed;
     if (x > width)    //if x is bigger than the HUD
     {
@@ -270,7 +296,7 @@ void scannerText(int xloc, int yloc)
   }//end if
   if(flash)
   {
-     text("SCANNING...", xloc, yloc);
+     text("SCANNING", xloc, yloc);
   }//end if
 }//end scannText()
 
@@ -295,10 +321,10 @@ void data(float xloc, float yloc)
   //create strings to display data
   String oxyLevelFormatted = nf(oxyLevel, 2, 1);    //format oxygen level to 99.9
   String damageFormatted = nf(damage, 2, 1);
-  String oxy = "02: " + oxyLevelFormatted;
-  String msl = "MSL: " + mslQty;
-  String guns = "GUN: " + gunsAmmo;
-  String dmg = "DMG: " + damageFormatted;    //format damage level to 99.9
+  String oxy = "02  " + oxyLevelFormatted;
+  String msl = "MSL  " + mslQty;
+  String guns = "GUN  " + gunsAmmo;
+  String dmg = "DMG  " + damageFormatted;    //format damage level to 99.9
   
   //display data
   fill(white);
@@ -306,6 +332,13 @@ void data(float xloc, float yloc)
   text(msl, xloc, yloc+30);
   text(guns, xloc, yloc+60);
   text(dmg, xloc, yloc+90);
+  
+  textFont(Arial);
+  text("%", xloc+67, yloc);
+  text("%", xloc+80, yloc+90);
+  
+  //conditions
+  textFont(Digi_tech);
   
   //-------missiles------//
   fill(white);
@@ -382,6 +415,8 @@ void crosshair()
     
     if(mousePressed && mouseButton == LEFT && gunsAmmo > 0 && mouseY < 399 && gunFlag == 1)   //if mouse pressed and there is ammo left and mouseY is less than 399
     {
+      guns.play();
+      guns.rewind();
       noFill();
       stroke(yellow);
       //white crosshair within main one when mouse clicked
@@ -389,8 +424,11 @@ void crosshair()
       line(mouseX-20, mouseY-20, mouseX+20, mouseY+20);
       line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
     }//end if
+    
     if(mousePressed && mouseButton == LEFT && mslQty > 0 && mouseY < 399 && mslFlag == 1)   //if mouse pressed and there is ammo left and mouseY is less than 399
     {
+      missile.play();
+      missile.rewind();
       noFill();
       stroke(255, 155, 5); //orange
       //white crosshair within main one when mouse clicked
@@ -399,6 +437,8 @@ void crosshair()
       line(mouseX+20, mouseY-20, mouseX-20, mouseY+20);
     }//end if
   }//end if
+  
+  //change the cursor to a hand when it's in the conrol panel
   else
   {
     cursor(HAND);
@@ -473,8 +513,6 @@ void frame()
   line(width/2+20, height/3-50, width/2+60, height/3+50);
   line(width/2+10, height/3-50, width/2+50, height/3+50);
   
-  
-  
   strokeWeight(6);
   line(width/2, height/3-10, width/2+10, height/3+10);
   line(width/2, height/3-10, width/2-10, height/3+10);
@@ -518,7 +556,6 @@ void controls()
   button3.run();
   wpn.run();
   engine.run();
- 
 }//end controls
 
 
@@ -530,6 +567,6 @@ void logo(int xloc, int yloc)
   text("deltacorp", xloc, yloc);
 }//end logo()
 
-
-//temperature? overheating?  bottom shape with semi transparency? bar chart? mouseX and Y co-ord on screen
+//comms?
 //fix mouse co-ord for firing weapons. there is an area outside KA that allows fire
+//trigonometry for the triangles in control panel area with relation to crosshair appearing?

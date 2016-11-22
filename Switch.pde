@@ -43,43 +43,45 @@ class Switch
     {
       if(mouseX >=xloc && mouseX <=xloc+w && mouseY >= yloc && mouseY <= yloc+h && passedcol == red)
       {
+         toggle.play();
+         toggle.rewind();
          col1 = passedcol;
          col2 = white;
          gunFlag = 1;
          mslFlag = 0;
        }//end if
-     }//end if
      
-    if(mousePressed)
-    {
       if(mouseX >=xloc+35 && mouseX <=xloc+35 +w && mouseY >= yloc && mouseY <= yloc+h && passedcol == red)
       {
+         toggle.play();
+         toggle.rewind();
          col1 = white;
          col2 = passedcol;
          gunFlag = 0;
          mslFlag = 1;
        }//end if
-     }//end if
-     
-         if(mousePressed)
-    {
+ 
       if(mouseX >=xloc && mouseX <=xloc+w && mouseY >= yloc && mouseY <= yloc+h && passedcol == yellow)
       {
+         toggle.play();
+         toggle.rewind();
+         engines.rewind();
+         engines.pause();
          col1 = passedcol;
          col2 = white;
          fuelFlag=0;
        }//end if
-     }//end if
-     
-    if(mousePressed)
-    {
+   
       if(mouseX >=xloc+35 && mouseX <=xloc+35 +w && mouseY >= yloc && mouseY <= yloc+h && passedcol == yellow)
       {
+         toggle.play();
+         toggle.rewind();
+         engines.loop();
          col1 = white;
          col2 = passedcol;
          fuelFlag=1;
        }//end if
-     }//end if
+   }//end if
      
 
     
