@@ -7,7 +7,6 @@ AudioPlayer engines;
 AudioPlayer guns;
 AudioPlayer missile;
 AudioPlayer alarm;
-AudioInput input;
 
 //----variables----//
 
@@ -43,9 +42,8 @@ PFont Digi_tech3;
 PFont Space_tech;
 
 //images
-PImage img;
 PImage img2;
-PImage img3;
+
 //image position
 float imageX= -300;
 float imageY= -100;
@@ -79,11 +77,11 @@ int mslFlag = 0;
 int fuelFlag=0;
 
 
-
-
 void setup()
 {
   size(800, 600);
+  
+  //sounds
   minim = new Minim(this);
   button = minim.loadFile("Button.mp3");
   toggle = minim.loadFile("Toggle.mp3");
@@ -91,8 +89,8 @@ void setup()
   guns = minim.loadFile("Laser_Blast.mp3");
   missile = minim.loadFile("Missile.mp3");
   alarm = minim.loadFile("Alarm.mp3");
-  input = minim.getLineIn();
   
+  //fonts
   Arial = loadFont("Arial-Black-16.vlw");
   Digi_tech = loadFont("Digitaltech-10.vlw"); 
   Digi_tech2 = loadFont("Digitaltech-20.vlw");
@@ -101,9 +99,10 @@ void setup()
   textFont(Digi_tech);
   textFont(Digi_tech2);
   textFont(Space_tech);
-  img = loadImage("space.jpg");
+  
+  //images
   img2 = loadImage("space2.jpg");
-  img3 = loadImage("space3.jpg");
+  
   now = millis();    //used for delay in flashing message
   
   //buttons that feature in controls()
@@ -118,7 +117,7 @@ void setup()
 
 void draw()
 {
-  background(0); //black background
+  //background(0); //black background
   frameRate(12);  //slow down frame rate to control animation and ammunition consumption
   //if key is pressed chane imageX to give impression of the ship moving
   if(fuelFlag==1 && fuel > 0)
@@ -167,9 +166,7 @@ void draw()
       scanner();    //a "scanner" that pans the screen
     }//end if
   }//end if
- 
   grid();    //display a grid 
-  
   frame();
  /*if CONTROL is pressed the scannerText() function is called
    this function is called seperately to scanner() so the text
@@ -188,10 +185,6 @@ void draw()
   data(width * 0.81, height * 0.83);    //data with position passed
   controls();
   logo(10, height-10);                  //logo with location passed
-  println(mouseX);
-  println(mouseY);
-  println(imageX);
-  println(imageY);
 }//end draw()
 
 void fuel(float xloc, float yloc)
@@ -311,11 +304,11 @@ void data(float xloc, float yloc)
   }//end if
   if(mousePressed && mouseButton == LEFT && mouseY< 399 && gunFlag==1)  //if mouse pressed and left click pressed and mouseY is less than 399
   {
-    gunsAmmo-=0.001;    //decriment ammunition
+    gunsAmmo-=0.0001;    //decriment ammunition
   }//end if
   if(mousePressed && mouseButton == LEFT && mouseY< 399 && mslFlag==1)  //if mouse pressed and left click pressed and mouseY is less than 399
   {
-    mslQty-=0.001;  //decriment missile quantity
+    mslQty-=0.0001;  //decriment missile quantity
   }//end if
   
   //create strings to display data
@@ -566,7 +559,3 @@ void logo(int xloc, int yloc)
   textFont(Space_tech);
   text("deltacorp", xloc, yloc);
 }//end logo()
-
-//comms?
-//fix mouse co-ord for firing weapons. there is an area outside KA that allows fire
-//trigonometry for the triangles in control panel area with relation to crosshair appearing?
