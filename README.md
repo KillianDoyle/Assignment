@@ -7,7 +7,7 @@ C15490862 Killian Doyle
 [![Video](http://img.youtube.com/vi/2oH3nGaAiOo/0.jpg)](http://www.youtube.com/watch?v=2oH3nGaAiOo)
 [![Video](http://img.youtube.com/vi/e9it_bKlu74/0.jpg)](http://www.youtube.com/watch?v=e9it_bKlu74)
 
-(The videos tend to lag, it's not the program)
+(The videos tend to lag, it's not the program. Included two videos)
 
 The assignment is a simple GUI for a futuristic space ship with a sci-fi theme.
 
